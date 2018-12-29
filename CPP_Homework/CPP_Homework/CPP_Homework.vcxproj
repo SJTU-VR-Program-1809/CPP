@@ -115,6 +115,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ClassDeterminent.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ClassDeterminent.cpp" />
+    <ClCompile Include="Homework1.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
