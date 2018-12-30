@@ -61,7 +61,6 @@ void  InsertBack(int i, int e)
 {
 	NODE *p = head;
 	NODE  *q;
-
 	int j = 0;
 	if (i == 0)
 	{
