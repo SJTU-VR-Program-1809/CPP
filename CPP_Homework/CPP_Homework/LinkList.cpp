@@ -135,7 +135,7 @@ void Print()
 	}
 	cout << endl;
 }
-int main()
+int bmain()
 {
 	InsertBack(0, 1);
 	InsertBack(1, 5);

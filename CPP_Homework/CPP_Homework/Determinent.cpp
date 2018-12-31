@@ -117,7 +117,7 @@ float CalculateDet()
 }
 
 
-int main()
+int amain()
 {
 	Print();
 	cout << "the result is:" << CalculateDet() << endl;
