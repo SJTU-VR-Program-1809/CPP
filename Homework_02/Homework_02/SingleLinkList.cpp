@@ -18,13 +18,6 @@ SingleLinkList::SingleLinkList(std::initializer_list<int> l)
 SingleLinkList::SingleLinkList(const SingleLinkList& l) 
 {
     head = l.head;
-   /* Node* curr{ head };
-    Node* lcurr{ l.head };
-    while (lcurr) {
-        curr->value = lcurr->value;
-        curr = curr->next;
-        lcurr = lcurr->next;
-    }*/
 }
 SingleLinkList::SingleLinkList(SingleLinkList&& l) 
 {
