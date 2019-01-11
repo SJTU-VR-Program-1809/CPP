@@ -18,7 +18,7 @@ Determinant::Determinant(float _deter[n][n]) {
             deter[i][j] = _deter[i][j];
         }
     }
-    biggestIndex == rank-1;
+    biggestIndex = rank-1;
     for (int i = 0; i < rank; i++) {
         indexArray[i] = i;
         isIndexLeft[i] = true;
@@ -83,7 +83,7 @@ bool Determinant::FindBiggest() {
         } while (notFind);
     }
     else {
-        if (isIndexLeft[biggestIndex] == true) {
+        if (isIndexLeft[biggestIndex]) {
             Swap(biggestIndex, biggestIndex - 1);
             biggestIndex -= 1;
         } 
