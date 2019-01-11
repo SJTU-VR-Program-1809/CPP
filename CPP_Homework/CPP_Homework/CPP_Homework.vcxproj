@@ -18,6 +18,13 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="LinkList.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="LinkList.cpp" />
+    <ClCompile Include="Test.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{4864893C-8042-4944-96B9-D784192D9445}</ProjectGuid>
@@ -114,11 +121,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Determinent.cpp" />
-    <ClCompile Include="determinent1.cpp" />
-    <ClCompile Include="LinkList.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

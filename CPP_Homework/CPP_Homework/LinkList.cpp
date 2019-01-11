@@ -1,160 +1,174 @@
-#include <iostream>
+#include "LinkList.h"
+#include<iostream>
 using namespace std;
 
-typedef struct node {
-	int data;
-	struct node *next;
-}NODE;
-NODE *head = NULL;
 
-//获取链表长度
-int Length()
+LinkList::LinkList(std::initializer_list<int> l)
 {
-	NODE *p = head;
-	int len = 0;
-	while (p != NULL)
+	auto item = l.begin();
+	shared_ptr<Node> p{ nullptr };
+	shared_ptr<Node> q{ nullptr };
+	p->v = *item++;
+	head = make_shared<Node>(p);
+	for (; item != l.end(); item++)
 	{
-		len++;
-		p = p->next;
-	}
-	return len;
-}
-
-//得到坐标下的元素
-int GetItem(int t)
-{
-	NODE *p = head;
-	int k = 0;
-	while (k < t - 1)
-	{
-		p = p->next;
-		k++;
-	}
-	return p->data;
-}
-
-//i:第几位插入，e：插入的数据
-void InsertForword(int i, int e)
-{
-	NODE *p = head;
-	NODE *q;
-	int k = 0;
-	if (i == 0)
-	{
-		q = new NODE[1];
-		q->data = e;
-		q->next = p;
-		head = q;
-	}
-	while (p&&k < i - 2)
-	{
-		p = p->next;
-		k++;
-	}
-	q = new NODE[1];
-	q->data = e;
-	q->next = p->next;
-	p->next = q;
-}
-
-void  InsertBack(int i, int e)
-{
-	NODE *p = head;
-	NODE  *q;
-	int j = 0;
-	if (i == 0)
-	{
-		q = (NODE *)new NODE[1];
-		q->data = e;
-		q->next = p;
-		head = q;
-
-	}
-	while (p&&j < i - 1)
-	{
-		p = p->next;
-		j++;
-	}
-	if (p == NULL)
-		return;
-	q = (NODE *)new NODE[1];
-	q->data = e;
-	q->next = p->next;
-	p->next = q;
-}
-
-void Delete(int i)
-{
-	NODE *p = head;
-	NODE *q;
-	if (p == NULL) return;
-	int j = 0;
-	if (i == 0)
-	{
-		head = head->next;
-		delete p;
-		p = NULL;
-	}
-	while (p&&j < i - 1)
-	{
-		j++;
-		p = p->next;
-	}
-	if (p == NULL)
-		return;
-	q = p->next;
-	p->next = p->next->next;
-	delete q;
-	q = NULL;
-	return;
-}
-
-void Reverse()
-{
-	if (head == NULL || head->next == NULL) return;
-	NODE *p = head;
-	NODE *q = head->next;
-	NODE *r;
-	head->next = NULL;
-	while (q)
-	{
-		r = q->next;
-		q->next = p;
+		q->v = *item;
+		p->next = &*q;
 		p = q;
-		q = r;
 	}
-	head = p;
-}
-void Print()
-{
-	NODE*p = head;
-	while (p != NULL)
-	{
-		cout << p->data << "-> ";
-		p = p->next;
-	}
-	cout << endl;
-}
-int bmain()
-{
-	InsertBack(0, 1);
-	InsertBack(1, 5);
-	InsertBack(2, 7);
-	InsertBack(3, 6);
-	InsertBack(4, 11);
-	InsertBack(5, 17);
-	Print();
-	cout << "链表长度" << Length() << endl;
-	cout << "第二个元素是：" << GetItem(2) << endl;
-	cout << endl;
-	Delete(0);
-	Print();
-	InsertForword(1, 99);
-	cout << "反转后各个元素的值是：";
-	Print();
-	cout << endl;
-	Reverse();
-	Print();
-	cout << endl;
+	_size = l.size();
 }
 
+LinkList::LinkList()
+{
+	head = make_shared<Node>(nullptr);
+	_size = 0;
+}
+
+
+LinkList::~LinkList()
+{
+	auto p = head;
+	while (p)
+	{
+		auto del = p;
+		p = shared_ptr<Node>(p->next);
+		delete &del;
+		del.reset();
+	}
+}
+
+LinkList::LinkList(const LinkList &l)
+{
+	head = l.head;
+	_size = l._size;
+}
+
+LinkList & LinkList::operator=(const LinkList & l)
+{
+	head = l.head;
+	_size = l._size;
+	return *this;
+}
+
+LinkList::LinkList(LinkList &&l)
+{
+	head = const_pointer_cast<Node>(l.head);
+	_size = move(l._size);
+}
+
+void LinkList::Reverse()
+{
+	if (empty())
+	{
+		cout << "LinkList is null";
+		return;
+	}
+	shared_ptr<Node> prev{ nullptr };
+	while (head)
+	{
+		shared_ptr<Node> next = make_shared<Node>(head->next);
+		head->next = &*prev;
+		prev = head;
+		head = next;
+	}
+	head = prev;
+}
+
+LinkList::Node *  LinkList::GetLastNth(int n) const
+{
+	shared_ptr<Node>p{ head };
+	shared_ptr<Node>q{ head };
+	int t = 0;
+	while (p != nullptr)
+	{
+		t++;
+		p = make_shared<Node>(p->next);
+	}
+	int k = 0;
+	while (k < t - n)
+	{
+		k++;
+		q = make_shared<Node>(q->next);
+	}
+	return &*q;
+}
+
+size_t LinkList::size() const
+{
+	return _size;
+}
+
+bool LinkList::empty() const
+{
+	if (head != nullptr)
+		return false;
+	else
+		return true;
+}
+
+void LinkList::push_back(int n)
+{
+	shared_ptr<Node>p{ head };
+	Node*q;
+	while (p != nullptr)
+	{
+		p = make_shared<Node>(p->next);
+	}
+	q = (Node *)new Node{};
+	q->v = n;
+	p->next = q;
+}
+
+void LinkList::erase(int v)
+{
+	shared_ptr<Node>p{ head };
+	Node*q;
+	while (p->v != v)
+	{
+		p = make_shared<Node>(p->next);
+	}
+	if (p != nullptr)
+	{
+		q = (Node *)new Node{};
+		q->v = p->next->next->v;
+		q->next = p->next->next;
+		p->next = q;
+	}
+}
+
+void LinkList::insert(Node *node, int v)
+{
+	shared_ptr<Node>p{ head };
+	shared_ptr<Node>q{ nullptr };
+	while (p)
+	{
+		if (&*p == &*node)
+		{
+			shared_ptr<Node> node{ nullptr };
+			node->v = v;
+			node->next = &* p;
+			if (q)
+			{
+				q->next = &*node;
+			}
+			else
+			{
+				head->next = &*node;
+			}
+			return;
+		}
+		p = make_shared<Node>(p->next);
+	}
+
+}
+
+void LinkList::print()
+{
+	shared_ptr<Node>p{ head };
+	while (p != nullptr)
+	{
+		std::cout << p->v << "-> ";
+	}
+	std::cout << endl;
+}
