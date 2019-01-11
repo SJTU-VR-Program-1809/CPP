@@ -22,8 +22,8 @@ int main() {
     SingleLinkList k = list;
     k.Print();                                                      //5,4,7,3,2,1,10
     SingleLinkList h = std::move(list);
-    h.Print();                                                      //5,4,7,3,2,1,10
     list.Print();                                                   //null
-   
+    h.Print();                                                      //5,4,7,3,2,1,10
+
     return 0;
 }

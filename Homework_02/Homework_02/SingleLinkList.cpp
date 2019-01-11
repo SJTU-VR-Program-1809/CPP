@@ -17,11 +17,28 @@ SingleLinkList::SingleLinkList(std::initializer_list<int> l)
 }
 SingleLinkList::SingleLinkList(const SingleLinkList& l) 
 {
-    head = l.head;
+    if (l.head) {
+        head = new Node{ l.head->value,nullptr };
+        Node* curr{head};
+        Node* lcurr{ l.head };
+        while (lcurr->next) {
+            curr->next = new Node{ lcurr->next->value,nullptr };
+            curr = curr->next;
+            lcurr = lcurr->next;
+        }
+    }
 }
 SingleLinkList::SingleLinkList(SingleLinkList&& l) 
 {
-    head = std::move(l.head);
+    if (l.head) {
+        head = std::move(l.head);
+        Node* curr{ head };
+        while (l.head) {
+            curr->next = std::move(l.head->next);
+            curr = curr->next;
+            l.head = l.head->next;
+        }
+    }
 }
 SingleLinkList::~SingleLinkList() 
 {
@@ -137,16 +154,21 @@ void SingleLinkList::Insert(Node* node, int v)
 }
 void SingleLinkList::Print()
 {
-    Node* curr{ head };
-    while (curr) {
-        cout << curr->value;
-        if (curr->next) {
-            cout << "->";
+    if (head) {
+        Node* curr{ head };
+        while (curr) {
+            cout << curr->value;
+            if (curr->next) {
+                cout << "->";
+            }
+            else {
+                cout << endl;
+                break;
+            }
+            curr = curr->next;
         }
-        else {
-            cout << endl;
-            break;
-        }
-        curr = curr->next;
+    }
+    else {
+        cout << "this list is null" << endl;
     }
 }
